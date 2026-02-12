@@ -1,0 +1,837 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Creative Experience</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandPink: '#FF1B8D',
+                        brandPurple: '#7209B7',
+                        darkBg: '#0F0518'
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0F0518;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Animated Gradient Background Mesh */
+        .bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background: radial-gradient(circle at 15% 50%, rgba(255, 27, 141, 0.4), transparent 25%),
+                        radial-gradient(circle at 85% 30%, rgba(114, 9, 183, 0.4), transparent 25%);
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: blob 10s infinite alternate;
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-input {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .glass-input:focus {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: #FF1B8D;
+            box-shadow: 0 0 15px rgba(255, 27, 141, 0.4);
+            outline: none;
+        }
+
+        /* Typewriter Cursor */
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            background-color: #FF1B8D;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Form Transitions */
+        .step-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: translateY(20px);
+        }
+
+        .step-content.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Flip Card */
+        .flip-card {
+            background-color: transparent;
+            perspective: 1000px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .flip-card-back {
+            background: linear-gradient(135deg, #FF1B8D, #7209B7);
+            transform: rotateY(180deg);
+            color: white;
+        }
+
+        /* Custom Radio/Checkbox */
+        .custom-radio:checked + div {
+            border-color: #FF1B8D;
+            background: rgba(255, 27, 141, 0.2);
+        }
+
+        /* Scroll Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Loading Spinner */
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: #FF1B8D;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            animation: fall linear forwards;
+            z-index: 100;
+        }
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(720deg); }
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-brandPink selection:text-white">
+
+    <!-- Background Elements -->
+    <div class="bg-mesh">
+        <div class="orb w-96 h-96 bg-brandPink top-0 left-0 -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="orb w-80 h-80 bg-brandPurple bottom-0 right-0 translate-x-1/3 translate-y-1/3 animation-delay-2000"></div>
+        <canvas id="particleCanvas" class="absolute inset-0 w-full h-full"></canvas>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass border-b-0 border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brandPink to-brandPurple">
+                        NEXUS
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home" class="hover:text-brandPink transition-colors px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="#cards" class="hover:text-brandPink transition-colors px-3 py-2 rounded-md text-sm font-medium">Features</a>
+                        <a href="#contact" class="bg-white text-brandPurple hover:bg-brandPink hover:text-white transition-all px-4 py-2 rounded-full text-sm font-bold shadow-lg transform hover:scale-105">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <div class="text-center px-4 z-10 max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                Let's Start a<br>
+                <span id="typewriter" class="text-transparent bg-clip-text bg-gradient-to-r from-brandPink to-brandPurple"></span><span class="cursor">&nbsp;</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+                We craft digital experiences that leave a lasting impression. Connect with us today and let's build something extraordinary together.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#contact" class="group relative px-8 py-3 bg-gradient-to-r from-brandPink to-brandPurple rounded-full font-semibold text-white shadow-lg overflow-hidden transition-transform transform hover:scale-105">
+                    <span class="relative z-10">Get in Touch</span>
+                    <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"></div>
+                </a>
+                <a href="#features" class="px-8 py-3 glass rounded-full font-semibold hover:bg-white/10 transition-colors">
+                    Learn More
+                </a>
+            </div>
+        </div>
+
+        <!-- Floating Shapes (Pure CSS) -->
+        <div class="absolute top-1/4 left-10 w-20 h-20 border-2 border-brandPink/30 rounded-full animate-float"></div>
+        <div class="absolute bottom-1/4 right-10 w-32 h-32 border border-brandPurple/30 rounded-lg rotate-45 animate-float" style="animation-delay: 1s;"></div>
+        <div class="absolute top-1/2 right-1/4 w-4 h-4 bg-brandPink rounded-full animate-pulse"></div>
+    </section>
+
+    <!-- Feature Cards (Flip Effect) -->
+    <section id="features" class="py-20 px-4 relative">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-5xl font-bold text-center mb-16 reveal">Why Choose Us?</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 perspective-1000">
+                <!-- Card 1 -->
+                <div class="flip-card h-80 w-full cursor-pointer reveal">
+                    <div class="flip-card-inner glass rounded-2xl p-6 group">
+                        <div class="flip-card-front glass rounded-2xl shadow-2xl">
+                            <i class="fas fa-bolt text-5xl text-brandPink mb-4"></i>
+                            <h3 class="text-2xl font-bold">Fast & Efficient</h3>
+                            <p class="text-gray-400 mt-2">Built for speed with cutting-edge technologies.</p>
+                        </div>
+                        <div class="flip-card-back shadow-2xl">
+                            <h3 class="text-2xl font-bold">Optimized</h3>
+                            <p class="mt-2">99/100 performance score on Lighthouse.</p>
+                            <p class="mt-2">Zero latency interactions.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="flip-card h-80 w-full cursor-pointer reveal" style="transition-delay: 100ms;">
+                    <div class="flip-card-inner glass rounded-2xl p-6 group">
+                        <div class="flip-card-front glass rounded-2xl shadow-2xl">
+                            <i class="fas fa-shield-alt text-5xl text-brandPurple mb-4"></i>
+                            <h3 class="text-2xl font-bold">Secure</h3>
+                            <p class="text-gray-400 mt-2">Enterprise-grade security for your data.</p>
+                        </div>
+                        <div class="flip-card-back shadow-2xl">
+                            <h3 class="text-2xl font-bold">Safe & Private</h3>
+                            <p class="mt-2">End-to-end encryption enabled.</p>
+                            <p class="mt-2">GDPR compliant.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="flip-card h-80 w-full cursor-pointer reveal" style="transition-delay: 200ms;">
+                    <div class="flip-card-inner glass rounded-2xl p-6 group">
+                        <div class="flip-card-front glass rounded-2xl shadow-2xl">
+                            <i class="fas fa-layer-group text-5xl text-pink-300 mb-4"></i>
+                            <h3 class="text-2xl font-bold">Scalable</h3>
+                            <p class="text-gray-400 mt-2">Grow without limits.</p>
+                        </div>
+                        <div class="flip-card-back shadow-2xl">
+                            <h3 class="text-2xl font-bold">Future Proof</h3>
+                            <p class="mt-2">Microservices architecture ready.</p>
+                            <p class="mt-2">Auto-scaling capabilities.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 px-4 relative">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            
+            <!-- Left Column: Info & Map -->
+            <div class="space-y-12 reveal">
+                <div>
+                    <h2 class="text-4xl font-bold mb-4">Get in Touch</h2>
+                    <p class="text-gray-400">Fill out the form or reach us directly.</p>
+                </div>
+
+                <!-- Contact Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="glass p-4 rounded-xl flex items-center space-x-4 hover:bg-white/5 transition">
+                        <div class="w-12 h-12 rounded-full bg-brandPink/20 flex items-center justify-center text-brandPink">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm">Location</h4>
+                            <p class="text-xs text-gray-400">123 Innovation Dr, Tech City</p>
+                        </div>
+                    </div>
+                    <div class="glass p-4 rounded-xl flex items-center space-x-4 hover:bg-white/5 transition">
+                        <div class="w-12 h-12 rounded-full bg-brandPurple/20 flex items-center justify-center text-brandPurple">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm">Email</h4>
+                            <p class="text-xs text-gray-400">hello@nexus.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Map -->
+                <div class="w-full h-64 rounded-2xl overflow-hidden glass relative group">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509374!2d144.9537353153169!3d-37.8172099797517!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d4c2b349649%3A0xb6899234e561db11!2sEnvato!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0; filter: grayscale(1) invert(1) opacity(0.8);" 
+                        allowfullscreen="" 
+                        loading="lazy">
+                    </iframe>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 rounded-2xl cursor-pointer">
+                        <button class="bg-white text-brandPurple px-6 py-2 rounded-full font-bold">View on Maps</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Multi-step Form -->
+            <div class="relative reveal" style="transition-delay: 200ms;">
+                <div class="glass rounded-3xl p-6 md:p-10 shadow-2xl relative overflow-hidden">
+                    
+                    <!-- Progress Bar -->
+                    <div class="flex justify-between mb-8 relative">
+                        <div class="absolute top-1/2 left-0 w-full h-1 bg-gray-700 -z-10 rounded-full"></div>
+                        <div id="progress-line" class="absolute top-1/2 left-0 h-1 bg-gradient-to-r from-brandPink to-brandPurple -z-10 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                        
+                        <div class="step-indicator active w-10 h-10 rounded-full bg-brandPink flex items-center justify-center font-bold text-sm">1</div>
+                        <div class="step-indicator w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center font-bold text-sm">2</div>
+                    </div>
+
+                    <form id="contactForm" onsubmit="return false;">
+                        
+                        <!-- Step 1: Basic Info -->
+                        <div id="step1" class="step-content active">
+                            <h3 class="text-2xl font-bold mb-6">Let's get personal</h3>
+                            
+                            <div class="space-y-5">
+                                <div class="relative group">
+                                    <input type="text" id="name" class="glass-input w-full p-4 rounded-xl text-white placeholder-transparent peer" placeholder="Full Name" required>
+                                    <label for="name" class="absolute left-4 -top-2.5 text-sm text-gray-400 bg-darkBg px-1 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-4 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-brandPink">Full Name</label>
+                                </div>
+
+                                <div class="relative group">
+                                    <input type="email" id="email" class="glass-input w-full p-4 rounded-xl text-white placeholder-transparent peer" placeholder="Email Address" required>
+                                    <label for="email" class="absolute left-4 -top-2.5 text-sm text-gray-400 bg-darkBg px-1 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-4 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-brandPink">Email Address</label>
+                                </div>
+
+                                <div class="relative">
+                                    <input type="password" id="password" class="glass-input w-full p-4 rounded-xl text-white placeholder-transparent peer" placeholder="Password" oninput="checkPasswordStrength(this.value)">
+                                    <label for="password" class="absolute left-4 -top-2.5 text-sm text-gray-400 bg-darkBg px-1 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-4 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-brandPink">Password (if login)</label>
+                                </div>
+                                
+                                <!-- Password Strength Indicator -->
+                                <div class="h-1 w-full bg-gray-700 rounded-full overflow-hidden mt-2">
+                                    <div id="passwordStrength" class="h-full w-0 transition-all duration-300 bg-red-500"></div>
+                                </div>
+                                <p id="strengthText" class="text-xs text-right text-gray-500">Start typing...</p>
+                            </div>
+
+                            <div class="mt-8 flex justify-between items-center">
+                                <span class="text-gray-500 text-sm">Step 1 of 2</span>
+                                <button type="button" onclick="nextStep()" class="bg-white text-brandPurple px-6 py-2 rounded-full font-bold hover:bg-brandPink hover:text-white transition shadow-lg">Next Step <i class="fas fa-arrow-right ml-2"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Message -->
+                        <div id="step2" class="step-content">
+                            <h3 class="text-2xl font-bold mb-6">Tell us more</h3>
+                            
+                            <div class="space-y-5">
+                                <div class="relative group">
+                                    <select id="subject" class="glass-input w-full p-4 rounded-xl text-white appearance-none">
+                                        <option value="" disabled selected class="text-black">Select Subject</option>
+                                        <option value="support" class="text-black">General Support</option>
+                                        <option value="sales" class="text-black">Sales Inquiry</option>
+                                        <option value="partnership" class="text-black">Partnership</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-4 top-4 text-gray-400 pointer-events-none"></i>
+                                </div>
+
+                                <div class="relative">
+                                    <textarea id="message" rows="4" class="glass-input w-full p-4 rounded-xl text-white placeholder-transparent peer resize-none" oninput="updateCharCount(this.value)" required></textarea>
+                                    <label for="message" class="absolute left-4 -top-2.5 text-sm text-gray-400 bg-darkBg px-1 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-4 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-brandPink">Message</label>
+                                </div>
+                                
+                                <!-- Character Count -->
+                                <div class="flex justify-end">
+                                    <span id="charCount" class="text-xs text-brandPink">0 / 500</span>
+                                </div>
+
+                                <!-- File Upload -->
+                                <div class="border-2 border-dashed border-gray-600 rounded-xl p-6 text-center hover:border-brandPink hover:bg-brandPink/5 transition cursor-pointer">
+                                    <i class="fas fa-cloud-upload-alt text-3xl text-gray-500 mb-2"></i>
+                                    <p class="text-sm text-gray-400">Drop files here or <span class="text-brandPink">browse</span></p>
+                                    <input type="file" class="hidden" id="fileInput">
+                                </div>
+                            </div>
+
+                            <div class="mt-8 flex justify-between items-center">
+                                <button type="button" onclick="prevStep()" class="text-gray-400 hover:text-white transition"><i class="fas fa-arrow-left mr-2"></i> Back</button>
+                                <button type="button" onclick="submitForm()" class="bg-gradient-to-r from-brandPink to-brandPurple px-8 py-3 rounded-full font-bold hover:shadow-[0_0_20px_rgba(255,27,141,0.5)] transition transform hover:scale-105">Send Message</button>
+                            </div>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div id="loadingState" class="hidden absolute inset-0 bg-darkBg/90 backdrop-blur-sm z-20 flex flex-col items-center justify-center rounded-3xl">
+                            <div class="loader mb-4"></div>
+                            <p class="text-gray-300 animate-pulse">Sending request...</p>
+                        </div>
+
+                        <!-- Success State -->
+                        <div id="successState" class="hidden absolute inset-0 bg-darkBg/95 backdrop-blur-sm z-30 flex flex-col items-center justify-center rounded-3xl text-center p-6">
+                            <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mb-4 shadow-[0_0_30px_rgba(34,197,94,0.6)] animate-bounce">
+                                <i class="fas fa-check text-4xl text-white"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-2">Message Sent!</h3>
+                            <p class="text-gray-400 text-sm">We'll get back to you within 24 hours.</p>
+                            <button onclick="resetForm()" class="mt-6 text-brandPink font-bold hover:underline">Send another message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-20 bg-black/20 backdrop-blur-sm">
+        <div class="max-w-3xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-10 reveal">Frequently Asked Questions</h2>
+            
+            <div class="space-y-4">
+                <!-- Item 1 -->
+                <div class="glass rounded-xl overflow-hidden reveal">
+                    <button class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none" onclick="toggleAccordion(this)">
+                        <span class="font-semibold">How fast can you deliver a project?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300 transform"></i>
+                    </button>
+                    <div class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                        <div class="px-6 pb-4 text-gray-400 text-sm">
+                            Our average turnaround time is 2-4 weeks for standard web development projects. We prioritize quality and efficiency.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="glass rounded-xl overflow-hidden reveal" style="transition-delay: 100ms;">
+                    <button class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none" onclick="toggleAccordion(this)">
+                        <span class="font-semibold">Do you offer post-launch support?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300 transform"></i>
+                    </button>
+                    <div class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                        <div class="px-6 pb-4 text-gray-400 text-sm">
+                            Yes! We offer 6 months of free support and maintenance, including updates, security patches, and bug fixes.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="glass rounded-xl overflow-hidden reveal" style="transition-delay: 200ms;">
+                    <button class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none" onclick="toggleAccordion(this)">
+                        <span class="font-semibold">Can I cancel my subscription anytime?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300 transform"></i>
+                    </button>
+                    <div class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                        <div class="px-6 pb-4 text-gray-400 text-sm">
+                            Absolutely. There are no long-term contracts. You can cancel your monthly plan at any time without penalties.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-16 text-center px-4 relative overflow-hidden">
+        <div class="max-w-2xl mx-auto glass p-8 rounded-3xl reveal">
+            <h2 class="text-2xl font-bold mb-2">Stay in the loop</h2>
+            <p class="text-gray-400 mb-6">Subscribe to our newsletter for the latest design trends.</p>
+            <form class="flex flex-col sm:flex-row gap-3" onsubmit="event.preventDefault(); alert('Subscribed!')">
+                <input type="email" placeholder="Enter your email" class="glass-input flex-1 p-3 rounded-full text-white focus:border-brandPurple">
+                <button class="bg-brandPurple hover:bg-brandPink text-white font-bold px-6 py-3 rounded-full transition shadow-lg">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 text-center text-gray-500 text-sm border-t border-white/10">
+        <p>&copy; 2023 Nexus Design. All rights reserved.</p>
+    </footer>
+
+    <!-- Chat Widget -->
+    <div id="chatWidget" class="fixed bottom-6 right-6 z-50">
+        <button onclick="toggleChat()" class="w-14 h-14 bg-brandPink rounded-full shadow-lg flex items-center justify-center text-white text-2xl hover:scale-110 transition hover:rotate-90">
+            <i class="fas fa-comments"></i>
+        </button>
+        <!-- Chat Bubble -->
+        <div id="chatBubble" class="absolute bottom-20 right-0 w-80 glass p-4 rounded-2xl transform scale-0 origin-bottom-right transition-transform duration-300">
+            <div class="flex justify-between items-center mb-4">
+                <h4 class="font-bold">Live Support</h4>
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            </div>
+            <p class="text-sm text-gray-300 mb-4">Hi there! How can we help you today?</p>
+            <div class="flex gap-2">
+                <input type="text" placeholder="Type a message..." class="glass-input flex-1 bg-transparent border-none text-sm text-white focus:ring-0 p-0">
+                <button class="text-brandPink"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- 1. Typewriter Effect ---
+        const words = ["Something Creative", "Amazing Websites", "Digital Experiences"];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typeSpeed = 100;
+        const deleteSpeed = 50;
+        const delayBetweenWords = 2000;
+        const typewriterElement = document.getElementById('typewriter');
+
+        function type() {
+            const currentWord = words[wordIndex];
+            
+            if (isDeleting) {
+                typewriterElement.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typewriterElement.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let nextSpeed = isDeleting ? deleteSpeed : typeSpeed;
+
+            if (!isDeleting && charIndex === currentWord.length) {
+                nextSpeed = delayBetweenWords;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+            }
+
+            setTimeout(type, nextSpeed);
+        }
+        document.addEventListener('DOMContentLoaded', type);
+
+
+        // --- 2. Particle Background ---
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particlesArray;
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.color = Math.random() > 0.5 ? '#FF1B8D' : '#7209B7';
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
+                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = 0.5;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            for (let i = 0; i < 50; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+        });
+
+        initParticles();
+        animateParticles();
+
+
+        // --- 3. Multi-Step Form Logic ---
+        function nextStep() {
+            if(validateStep1()) {
+                document.getElementById('step1').classList.remove('active');
+                document.getElementById('step2').classList.add('active');
+                updateProgress(50);
+                document.querySelector('.step-indicator.active').classList.remove('active', 'bg-brandPink');
+                document.querySelector('.step-indicator.active').classList.add('bg-gray-700');
+                document.querySelector('.step-indicator:nth-child(2)').classList.add('active', 'bg-brandPink');
+            }
+        }
+
+        function prevStep() {
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step1').classList.add('active');
+            updateProgress(0);
+            document.querySelector('.step-indicator.active').classList.remove('active', 'bg-brandPink');
+            document.querySelector('.step-indicator.active').classList.add('bg-gray-700');
+            document.querySelector('.step-indicator:nth-child(1)').classList.add('active', 'bg-brandPink');
+        }
+
+        function updateProgress(percent) {
+            document.getElementById('progress-line').style.width = percent + '%';
+        }
+
+        // Validation
+        function validateStep1() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!name || !email) {
+                alert("Please fill in Name and Email.");
+                return false;
+            }
+            return true;
+        }
+
+        // Password Strength
+        function checkPasswordStrength(password) {
+            const indicator = document.getElementById('passwordStrength');
+            const text = document.getElementById('strengthText');
+            let strength = 0;
+
+            if (password.length > 5) strength += 25;
+            if (password.length > 8) strength += 25;
+            if (/[A-Z]/.test(password) && /[0-9]/.test(password)) strength += 50;
+
+            indicator.style.width = strength + '%';
+            
+            if (strength <= 25) { indicator.className = 'h-full bg-red-500'; text.textContent = 'Weak'; text.className = 'text-xs text-right text-red-500'; }
+            else if (strength <= 50) { indicator.className = 'h-full bg-yellow-400'; text.textContent = 'Moderate'; text.className = 'text-xs text-right text-yellow-400'; }
+            else { indicator.className = 'h-full bg-green-500'; text.textContent = 'Strong'; text.className = 'text-xs text-right text-green-500'; }
+        }
+
+        // Character Counter
+        function updateCharCount(value) {
+            const count = value.length;
+            document.getElementById('charCount').textContent = `${count} / 500`;
+            if (count > 450) document.getElementById('charCount').classList.replace('text-brandPink', 'text-red-500');
+            else document.getElementById('charCount').classList.replace('text-red-500', 'text-brandPink');
+        }
+
+        // File Upload
+        document.querySelector('.border-dashed').addEventListener('click', () => {
+            document.getElementById('fileInput').click();
+        });
+
+        // Submit
+        function submitForm() {
+            const btn = document.querySelector('#step2 button[onclick="submitForm()"]');
+            const originalText = btn.innerHTML;
+            
+            // Show Loader
+            document.getElementById('loadingState').classList.remove('hidden');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+            // Simulate API call
+            setTimeout(() => {
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('successState').classList.remove('hidden');
+                
+                // Trigger Confetti
+                fireConfetti();
+            }, 2000);
+        }
+
+        function resetForm() {
+            document.getElementById('successState').classList.add('hidden');
+            document.getElementById('contactForm').reset();
+            document.getElementById('charCount').textContent = '0 / 500';
+            document.getElementById('passwordStrength').style.width = '0%';
+            document.getElementById('strengthText').textContent = 'Start typing...';
+            
+            // Reset UI state
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step1').classList.add('active');
+            updateProgress(0);
+            document.querySelectorAll('.step-indicator').forEach((el, i) => {
+                el.classList.remove('bg-brandPink');
+                if (i === 0) el.classList.add('bg-brandPink', 'active');
+                else el.classList.add('bg-gray-700');
+            });
+        }
+
+
+        // --- 4. Confetti Animation ---
+        function fireConfetti() {
+            const colors = ['#FF1B8D', '#7209B7', '#ffffff', '#00FFFF'];
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confetti.style.top = '-10px';
+                document.body.appendChild(confetti);
+
+                // Remove after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 4000);
+            }
+        }
+
+
+        // --- 5. Accordion ---
+        function toggleAccordion(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('i');
+            
+            // Close others (optional)
+            document.querySelectorAll('#features .max-h-0').forEach(el => {
+                if(el !== content) {
+                    el.style.maxHeight = null;
+                    el.previousElementSibling.querySelector('i').style.transform = 'rotate(0deg)';
+                }
+            });
+
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
+
+        // --- 6. Scroll Animations (AOS-like) ---
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+
+        // --- 7. Chat Widget ---
+        let isChatOpen = false;
+        function toggleChat() {
+            const bubble = document.getElementById('chatBubble');
+            isChatOpen = !isChatOpen;
+            if (isChatOpen) {
+                bubble.style.transform = 'scale(1)';
+            } else {
+                bubble.style.transform = 'scale(0)';
+            }
+        }
+
+    </script>
+</body>
+</html>
