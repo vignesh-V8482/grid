@@ -23,7 +23,7 @@
 .services .container{
     padding:0;
     width: 100%;
-    margin: 0 auto;
+    margin: 70px auto 0;
     overflow: hidden;
 }
 
@@ -75,9 +75,18 @@
     filter: blur(0);
 }
 
+.services-main{
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  margin: 0 10px;
+}
+
 .service-paragraph {
-  max-width: 1100px;
-  margin: 0 auto 60px;
+  max-width: 1200px;
+  margin: 10px auto 60px;
   padding: 0 6%;
   text-align: center;
 }
@@ -85,7 +94,8 @@
 .service-paragraph p {
   font-size: 1.15rem;
   line-height: 1.8;
-  color: #f8df4d;
+  color: #ffffff;
+  text-align: justify;
 }
 
 @media (max-width: 768px) {
@@ -108,6 +118,7 @@
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
     padding:  0 auto;
+    
 }
 
 .service-card {
@@ -729,7 +740,7 @@
 
 .graphical-content p {
     font-size: 18px;
-    color: #353232;
+    color: #666464;
     margin: 20px auto;
     max-width: 1200px;
     padding: 0.3rem;
@@ -850,13 +861,6 @@
     overflow: hidden;
   }
 
-  .project-section p{
-    margin: 0 auto 40px;
-    color: #000;
-    max-width: 1200px;
-    padding: 0.3rem;
-  }
-
   .project-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -957,7 +961,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  margin: 60px 0 0;
+  margin: 60px 0 60px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1065,7 +1069,7 @@
 
   .Animation-content p {
       font-size: 18px;
-      color: #353232;
+      color: #767070;
       margin: 20px auto;
       max-width: 1200px;
       padding: 0.3rem;
