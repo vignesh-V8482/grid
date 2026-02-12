@@ -75,13 +75,43 @@
     filter: blur(0);
 }
 
-.services-main{
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+/* Main glassmorphism card/container – STATIC VERSION */
+.services-main {
+  background: 
+    rgba(255, 255, 255, 0.05)
+    url('/images/blurred-bg.webp') center / cover no-repeat;
+  
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  
   margin: 0 10px;
+  padding: 24px;
+  overflow: hidden;
+  
+  /* Keep acceleration helpers – they still help with other animations */
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+  
+  transition: all 0.3s ease;
+}
+
+/* Mobile adjustments – no blur anymore, so simpler */
+@media (max-width: 768px) {
+  .services-main {
+    background: 
+      rgba(255, 255, 255, 0.08)
+      url('/images/blurred-bg.webp') center / cover no-repeat;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services-main {
+    transition: none;
+  }
 }
 
 .service-paragraph {

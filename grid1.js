@@ -15,6 +15,20 @@ function throttle(fn, limit = 100) {
   };
 }
 
+let scrollTimeout;
+const glass = document.querySelector('.services-main');
+
+window.addEventListener('scroll', () => {
+  glass.style.backdropFilter = 'none';
+  glass.style.webkitBackdropFilter = 'none';
+
+  clearTimeout(scrollTimeout);
+  scrollTimeout = setTimeout(() => {
+    glass.style.backdropFilter = 'blur(4px)';
+    glass.style.webkitBackdropFilter = 'blur(4px)';
+  }, 150); // re-enable 150ms after scroll stops
+}, { passive: true });
+
 function rafThrottle(fn) {
   let ticking = false;
   return (...args) => {
