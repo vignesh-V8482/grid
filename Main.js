@@ -241,16 +241,16 @@ function initCarousel() {
 
 // ── 9. Client Reviews Slider ────────────────────────────────────────
 const clientReviews = [
-  { name: "Murali", role: "Developer", rating: 4, imgSrc: "./assets/MuraliSquare.png", userReview: "Grid services is really impressive, they offer multiple services which solve real world problems." },
+  { name: "Murali", role: "Developer", rating: 4, imgSrc: "./assets/MuraliSquare.png", userReview: "Grid services is really impressive, they offer multiple services which solve real world problems.Grid services is really impressive, they offer multiple services which solve real world problems" },
   { name: "Sethu Praveen", role: "UI Designer", rating: 5, imgSrc: "./assets/Sethu.png", userReview: "The design quality and attention to detail from Griddezign is top-notch. Highly recommended." },
   { name: "Vicky", role: "Startup Founder", rating: 5, imgSrc: "./assets/Sethu.png", userReview: "Griddezign helped us shape our brand identity with clarity and strategy. Excellent experience." },
   { name: "Balaji", role: "Product Manager", rating: 4, imgSrc: "./assets/Balaji.jpg", userReview: "Very professional team with strong communication and design thinking skills." },
-  { name: "Lakshmi", role: "Marketing Lead", rating: 4, imgSrc: "./assets/Nirosha.jpg", userReview: "Their designs improved our engagement and brand perception across platforms." },
+  { name: "Lakshmi", role: "Marketing Lead", rating: 4, imgSrc: "./assets/Nirosha.jpg", userReview: "Their designs improved our engagement and brand perception across platforms.Grid services is really impressive, they offer multiple services which solve real world problems" },
   { name: "Nirosha", role: "AI Developer", rating: 5, imgSrc: "./assets/Nirosha.jpg", userReview: "Griddezign understands storytelling through design. Clean, purposeful, and effective." },
   { name: "Rahul", role: "Business Consultant", rating: 4, imgSrc: "./assets/Sethu.png", userReview: "Strategic approach to design that aligns well with business goals." },
   { name: "Mohan", role: "Python Developer", rating: 5, imgSrc: "./assets/lokesh.jpg", userReview: "Working with Griddezign felt like a long-term partnership rather than a service." },
   { name: "MohanRaj", role: "Tech Lead", rating: 4, imgSrc: "./assets/MohanRaj.jpg", userReview: "Strong design systems and consistent execution across all deliverables." },
-  { name: "Meena", role: "Brand Manager", rating: 5, imgSrc: "./assets/Sethu.png", userReview: "Elegant, minimal, and impactful designs. Exactly what our brand needed." }
+  { name: "Meena", role: "Brand Manager", rating: 5, imgSrc: "./assets/Sethu.png", userReview: "Elegant, minimal, and impactful designs. Exactly what our brand needed.Grid services is really impressive, they offer multiple services which solve real world problems" }
 ];
 
 let reviewIndex = 0;
@@ -525,4 +525,329 @@ if (document.readyState === "loading") {
                 cursorFollower.style.top = e.clientY + 'px';
                 cursorFollower.style.opacity = '1';
             }, 100);
+        });
+        
+        //===============grapical-design open model======================//
+
+     // Modal functionality
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalImage = document.getElementById('modalImage');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalCounter = document.getElementById('modalCounter');
+        const modalLoading = document.getElementById('modalLoading');
+        const modalInfo = document.getElementById('modalInfo');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const panIndicator = document.getElementById('panIndicator');
+        const modalImageSection = document.getElementById('modalImageSection');
+        
+        let currentProjects = [];
+        let currentProjectIndex = 0;
+        let currentZoom = 1;
+        let translateX = 0;
+        let translateY = 0;
+        let isDragging = false;
+        let startX, startY;
+        let lastTranslateX = 0;
+        let lastTranslateY = 0;
+
+        // Collect all projects by category
+        function collectProjects() {
+            const cards = document.querySelectorAll('.project-card');
+            const categories = {};
+            
+            cards.forEach((card, index) => {
+                const category = card.dataset.category || 'other';
+                if (!categories[category]) {
+                    categories[category] = [];
+                }
+                categories[category].push({
+                    element: card,
+                    index: index,
+                    title: card.dataset.title,
+                    description: card.dataset.description,
+                    image: card.querySelector('img').src,
+                    category: category
+                });
+            });
+            
+            return categories;
+        }
+
+        const allProjects = collectProjects();
+
+        // Initialize project cards
+        function initializeProjectCards() {
+            const projectCards = document.querySelectorAll('.project-card');
+            
+            projectCards.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const category = card.dataset.category || 'other';
+                    currentProjects = allProjects[category] || [];
+                    
+                    // Find current project index
+                    currentProjectIndex = currentProjects.findIndex(p => p.element === card);
+                    
+                    openModal();
+                });
+            });
+        }
+
+        function openModal() {
+            if (currentProjects.length === 0) return;
+            
+            const project = currentProjects[currentProjectIndex];
+            
+            // Show loading
+            modalLoading.style.display = 'block';
+            
+            // Update modal content
+            modalImage.src = project.image;
+            modalTitle.textContent = project.title;
+            modalDescription.textContent = project.description;
+            
+            // Update counter
+            updateCounter();
+            
+            // Show modal
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Hide loading when image loads
+            modalImage.onload = () => {
+                modalLoading.style.display = 'none';
+                resetZoom();
+            };
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            resetZoom();
+        }
+
+        function updateCounter() {
+            modalCounter.textContent = `${currentProjectIndex + 1} / ${currentProjects.length}`;
+        }
+
+        function previousImage() {
+            if (currentProjectIndex > 0) {
+                currentProjectIndex--;
+                openModal();
+            }
+        }
+
+        function nextImage() {
+            if (currentProjectIndex < currentProjects.length - 1) {
+                currentProjectIndex++;
+                openModal();
+            }
+        }
+
+        // Zoom functionality
+        function zoomIn() {
+            if (currentZoom < 3) {
+                currentZoom = Math.min(currentZoom * 1.2, 3);
+                applyTransform();
+                updateUIState();
+                if (currentZoom > 1) {
+                    showPanIndicator();
+                }
+            }
+        }
+
+        function zoomOut() {
+            if (currentZoom > 1) {
+                currentZoom = Math.max(currentZoom / 1.2, 1);
+                applyTransform();
+                updateUIState();
+                if (currentZoom === 1) {
+                    resetPan();
+                    hidePanIndicator();
+                }
+            }
+        }
+
+        function resetZoom() {
+            currentZoom = 1;
+            resetPan();
+            applyTransform();
+            updateUIState();
+            hidePanIndicator();
+        }
+
+        function resetPan() {
+            translateX = 0;
+            translateY = 0;
+            lastTranslateX = 0;
+            lastTranslateY = 0;
+        }
+
+        function applyTransform() {
+            modalImage.style.transform = `scale(${currentZoom}) translate(${translateX}px, ${translateY}px)`;
+        }
+
+        // Update UI state based on zoom
+        function updateUIState() {
+            if (currentZoom > 1) {
+                // Hide all UI elements when zoomed
+                modalInfo.classList.add('hidden');
+                modalCounter.classList.add('hidden');
+                prevBtn.classList.add('hidden');
+                nextBtn.classList.add('hidden');
+            } else {
+                // Show all UI elements when not zoomed
+                modalInfo.classList.remove('hidden');
+                modalCounter.classList.remove('hidden');
+                prevBtn.classList.remove('hidden');
+                nextBtn.classList.remove('hidden');
+            }
+        }
+
+        function showPanIndicator() {
+            panIndicator.classList.add('show');
+            setTimeout(() => {
+                panIndicator.classList.remove('show');
+            }, 2000);
+        }
+
+        function hidePanIndicator() {
+            panIndicator.classList.remove('show');
+        }
+
+        // Pan functionality
+        modalImageSection.addEventListener('mousedown', (e) => {
+            if (currentZoom > 1) {
+                isDragging = true;
+                startX = e.clientX - lastTranslateX;
+                startY = e.clientY - lastTranslateY;
+                modalImageSection.classList.add('dragging');
+            }
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging && currentZoom > 1) {
+                e.preventDefault();
+                translateX = e.clientX - startX;
+                translateY = e.clientY - startY;
+                applyTransform();
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                lastTranslateX = translateX;
+                lastTranslateY = translateY;
+                modalImageSection.classList.remove('dragging');
+            }
+        });
+
+        // Touch support
+        let touchStartX, touchStartY;
+        
+        modalImageSection.addEventListener('touchstart', (e) => {
+            if (currentZoom > 1) {
+                const touch = e.touches[0];
+                touchStartX = touch.clientX - lastTranslateX;
+                touchStartY = touch.clientY - lastTranslateY;
+                isDragging = true;
+            }
+        });
+
+        modalImageSection.addEventListener('touchmove', (e) => {
+            if (isDragging && currentZoom > 1) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                translateX = touch.clientX - touchStartX;
+                translateY = touch.clientY - touchStartY;
+                applyTransform();
+            }
+        });
+
+        modalImageSection.addEventListener('touchend', () => {
+            if (isDragging) {
+                isDragging = false;
+                lastTranslateX = translateX;
+                lastTranslateY = translateY;
+            }
+        });
+
+        // Mouse wheel zoom
+        modalImageSection.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            if (e.deltaY < 0) {
+                zoomIn();
+            } else {
+                zoomOut();
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!modalOverlay.classList.contains('active')) return;
+
+            switch(e.key) {
+                case 'Escape':
+                    closeModal();
+                    break;
+                case 'ArrowLeft':
+                    if (e.shiftKey) {
+                        previousImage();
+                    } else if (currentZoom > 1) {
+                        translateX += 20;
+                        applyTransform();
+                    }
+                    break;
+                case 'ArrowRight':
+                    if (e.shiftKey) {
+                        nextImage();
+                    } else if (currentZoom > 1) {
+                        translateX -= 20;
+                        applyTransform();
+                    }
+                    break;
+                case 'ArrowUp':
+                    if (currentZoom > 1) {
+                        translateY += 20;
+                        applyTransform();
+                    }
+                    break;
+                case 'ArrowDown':
+                    if (currentZoom > 1) {
+                        translateY -= 20;
+                        applyTransform();
+                    }
+                    break;
+                case '+':
+                case '=':
+                    zoomIn();
+                    break;
+                case '-':
+                case '_':
+                    zoomOut();
+                    break;
+                case '0':
+                    resetZoom();
+                    break;
+            }
+        });
+
+        // Click outside to close
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+
+        // Prevent image drag
+        modalImage.addEventListener('dragstart', (e) => {
+            e.preventDefault();
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeProjectCards();
         });

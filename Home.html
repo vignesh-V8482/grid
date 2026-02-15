@@ -21,6 +21,7 @@
     />
 
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="grid1.css">
   </head>
   <body>
     <!-- Custom Cursor -->
@@ -448,24 +449,8 @@
       </div>
     </div>
     <script src="Main.js"></script>
+    <script src="grid1.js"></script>
     <script>
-      fetch("navbar.html")
-        .then((res) => res.text())
-        .then((data) => {
-          document.getElementById("navbar").innerHTML = data;
-          initNavbar(); // VERY IMPORTANT
-        });
-
-      function initNavbar() {
-        const hamburger = document.getElementById("hamburger");
-        const navLinks = document.querySelector(".nav-links");
-
-        if (!hamburger || !navLinks) return;
-
-        hamburger.addEventListener("click", () => {
-          navLinks.classList.toggle("active");
-        });
-      }
     </script>
   </body>
 </html>

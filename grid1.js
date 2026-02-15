@@ -15,20 +15,6 @@ function throttle(fn, limit = 100) {
   };
 }
 
-let scrollTimeout;
-const glass = document.querySelector('.services-main');
-
-window.addEventListener('scroll', () => {
-  glass.style.backdropFilter = 'none';
-  glass.style.webkitBackdropFilter = 'none';
-
-  clearTimeout(scrollTimeout);
-  scrollTimeout = setTimeout(() => {
-    glass.style.backdropFilter = 'blur(4px)';
-    glass.style.webkitBackdropFilter = 'blur(4px)';
-  }, 150); // re-enable 150ms after scroll stops
-}, { passive: true });
-
 function rafThrottle(fn) {
   let ticking = false;
   return (...args) => {
@@ -519,32 +505,33 @@ function initProjectGridAnimation() {
 });
 
 
-// ── Main Initialization ─────────────────────────────────────────────────────
-function initializeAllAnimations() {
-  initServiceHeroAnimation();
-  initServiceCardsAnimation();
-  initToolsCarousel();
-  initToolsTooltip();
-  initActiveToolHighlight();
-  initProjectGridAnimation();
-  initAnimationThumbnails();
-  truncateVideoTitles();
-  initVideoModals();
-}
 
-// Run when DOM is ready
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initializeAllAnimations);
-} else {
-  initializeAllAnimations();
-}
+ // ── Main Initialization ─────────────────────────────────────────────────────
+    function initializeAllAnimations() {
+    initServiceHeroAnimation();
+    initServiceCardsAnimation();
+    initToolsCarousel();
+    initToolsTooltip();
+    initActiveToolHighlight();
+    initProjectGridAnimation();
+    initAnimationThumbnails();
+    truncateVideoTitles();
+    initVideoModals();
+    }
+
+    // Run when DOM is ready
+    if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeAllAnimations);
+    } else {
+    initializeAllAnimations();
+    }
+
 
 //=============== contact page===================================//
-
-
       // ============================================
         // 1. TYPEWRITER EFFECT
         // ============================================
+
         const typewriterWords = ["Something Creative", "Amazing Websites", "Visual Experiences"];
         let currentWordIndex = 0;
         let currentCharIndex = 0;
@@ -1216,60 +1203,6 @@ if (document.readyState === "loading") {
         // 5. FORM SUBMISSION (WITH VALIDATION)
         // ============================================
 
-        // function submitContactForm() {
-        //     const subject = document.getElementById('contact-subject-select').value;
-        //     const message = document.getElementById('contact-message-textarea').value.trim();
-
-        //     // Validation: Check Subject
-        //     if (!subject) {
-        //         showToast("Please select a subject.");
-        //         document.getElementById('contact-subject-select').focus();
-        //         return;
-        //     }
-
-        //     // Validation: Check Message
-        //     if (!message) {
-        //         showToast("Please write a message before submitting.");
-        //         document.getElementById('contact-message-textarea').focus();
-        //         // Highlight textarea
-        //         document.getElementById('contact-message-textarea').classList.add('border-red-500');
-        //         setTimeout(() => {
-        //             document.getElementById('contact-message-textarea').classList.remove('border-red-500');
-        //         }, 2000);
-        //         return;
-        //     }
-
-        //     const submitButton = document.querySelector('.contact-submit-button');
-            
-        //     // Show Loading State
-        //     document.getElementById('contact-loading-overlay').classList.remove('hidden');
-        //     submitButton.disabled = true;
-
-        //     // Simulate API call
-        //     setTimeout(() => {
-        //         // Hide Loading State
-        //         document.getElementById('contact-loading-overlay').classList.add('hidden');
-                
-        //         // Show Success State
-        //         document.getElementById('contact-success-overlay').classList.remove('hidden');
-                
-        //         // Trigger Confetti
-        //         triggerConfettiAnimation();
-                
-        //         // Log data (simulation)
-        //         console.log("Form Submitted:");
-        //         console.log({
-        //             name: document.getElementById('contact-first-name-input').value + " " + document.getElementById('contact-last-name-input').value,
-        //             email: document.getElementById('contact-email-input').value,
-        //             mobile: document.getElementById('contact-mobile-input').value,
-        //             subject: subject,
-        //             message: message,
-        //             file: fileInput.files[0] ? fileInput.files[0].name : "No file"
-        //         });
-
-        //     }, 2000);
-        // }
-
         function submitContactForm() {
             const subject = document.getElementById('contact-subject-select').value;
             const message = document.getElementById('contact-message-textarea').value.trim();
@@ -1301,34 +1234,6 @@ if (document.readyState === "loading") {
                 triggerConfettiAnimation();
             }, 2000);
         }
-
-         /**
-         * Reset the contact form to initial state
-         */
-        // function resetContactForm() {
-        //     // Hide Success Overlay
-        //     document.getElementById('contact-success-overlay').classList.add('hidden');
-            
-        //     // Reset Form Fields
-        //     document.getElementById('contact-main-form').reset();
-        //     document.getElementById('contact-character-counter').textContent = '0 / 500';
-            
-        //     // Reset to Step 1
-        //     document.getElementById('contact-form-step-2').classList.remove('contact-step-active');
-        //     document.getElementById('contact-form-step-1').classList.add('contact-step-active');
-        //     updateProgressBar(0);
-            
-        //     // Reset Step Indicators
-        //     const stepIndicators = document.querySelectorAll('.contact-step-indicator');
-        //     stepIndicators.forEach((indicator, index) => {
-        //         indicator.classList.remove('contact-indicator-active', 'bg-primaryPink', 'bg-gray-700');
-        //         if (index === 0) {
-        //             indicator.classList.add('bg-primaryPink', 'contact-indicator-active');
-        //         } else {
-        //             indicator.classList.add('bg-gray-700');
-        //         }
-        //     });
-        // }
 
       function resetContactForm() {
     // Hide success overlay
@@ -1490,3 +1395,4 @@ if (document.readyState === "loading") {
             }
         `;
         document.head.appendChild(styleSheet);
+
